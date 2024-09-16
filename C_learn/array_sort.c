@@ -19,8 +19,7 @@ void print_array(int array[],int low,int high)
 }
 void subsort(int array[],int low,int high) 
 {
-    if(low<high)
-    {
+    if(low<high){// high = i-1的时候，确保high>=0，否则low = 0,high=-1,死循环
         int pref = low;
         int i = low + 1;
         int j = low + 1;
@@ -48,7 +47,7 @@ int main()
     print_array(array, 0 , size);
     // swap(array,1,5);
     // print_array(array,size);
-    subsort(array,0,size-1);
+    subsort(array,0,size-1);// high访问越界
     print_array(array, 0, size);
     return 0;
 }

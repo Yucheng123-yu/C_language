@@ -7,6 +7,8 @@ typedef struct node
     struct node *next;
 } snode;
 
+#define calc_arr_length(arr) (sizeof(arr)/sizeof(arr[0]))
+
 void scanf_node(snode **head, int len)
 {// Scanf the node
     snode *p, *q;
@@ -79,14 +81,37 @@ void insert_node(snode **head, int th, int data)
     if (p == NULL)
         return;
     // printf("Out of range\n");
-    q->next = p->next;
+    // q->next = p->next;
     snode *new = (snode *)malloc(sizeof(snode));
     new->data = data;
     new->next = p;
     q->next = new;
 }
 
-int  calc_length(snode *head)
+void delete_node(snode **head, int th)
+{// Delete node at th position
+	if(*head == NULL || th < 1){
+		return;
+	}
+	snode *p,*q;
+	p = *head;
+	if(th == 1){
+		*head = p->next;
+		free(p);
+		return;
+	}
+	for(int i=1;i<=th;i++){
+		q = p;
+		p = p->next;
+	}
+	if(p==NULL){
+		return;
+	}
+	q->next = p->next;
+	free(p);
+}
+
+int  calc_nodelength(snode *head)
 {// Calculate the length of the list
     snode *p;
     int len = 0;
@@ -100,42 +125,34 @@ int  calc_length(snode *head)
     return len;
 }
 
-void array_to_nodelist(snode **head, int *arr, int len)
-{// Convert array to node list
-    snode *p, *q;
-    if(*head != NULL)
-    {
-        q = *head;
-        while (q->next != NULL)
-        {
-            q = q->next;
-        }
-        for (size_t i = 0; i < len; i++)
-        {
-            p = (snode *)malloc(sizeof(snode));
-            p->data = arr[i];
-            p->next = NULL;
-            q->next = p;
-            q = p;
-        }
-        return;
-    }
-    for (int i = 0; i < len; i++)
-    {
-
-        snode *p = (snode *)malloc(sizeof(snode));
-        p->data = arr[i];
-        p->next = NULL;
-        if (*head == NULL)
-        {
-            *head = p;
-        }
-        else
-        {
-            q->next = p;
-        }
-        q = p;
-    }
+void array_to_nodelist(snode **head, int arr[], int len) {
+    // Convert array to node list
+	snode * p, *q;
+	if(*head == NULL){
+		for (int i = 0; i < len; i++) {
+			p = (snode*)malloc(sizeof(snode));
+			p->data = arr[i];
+			p->next = NULL;
+			if (*head == NULL) {
+				*head = p;
+			} else
+				q->next = p;
+			q = p;
+		}
+	}
+	else{
+		q = *head;
+		while(q->next!=NULL){
+			q = q->next;
+		}
+		for (int i = 0; i < len; i++) {
+			p = (snode*)malloc(sizeof(snode));
+			p->data = arr[i];
+			p->next = NULL;
+			q->next =p;
+			q=p;
+		}
+	}	
 }
 void swapnode(snode *a, snode *b)
 {
@@ -152,10 +169,10 @@ void sort_nodelist(snode *low,snode *high)
     snode *i = low->next;
     snode *j = low->next;
 
-    while(j->next != NULL)
+    while(j != high->next)
     {
         if(j->data < pvef)
-        {
+        {// '<'  or '>' can be changed direction
             swapnode(i, j);
             i_pre = i;
             i = i->next;
@@ -196,7 +213,9 @@ int main()
     // print_node(head1);
 
     int arr1[] = {51, 12, 33, 24, 55, 36, 76, 26, 96};
+    int array[] = {15, 5, 2, 4, 8, 9, 12};
     array_to_nodelist(&head1, arr1, 9);
+    array_to_nodelist(&head1, array, sizeof(array)/sizeof(array[0]));
     print_node(head1);
 
     printf("High is %d\n", head1->data);
