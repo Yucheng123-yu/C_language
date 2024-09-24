@@ -125,8 +125,29 @@ int  calc_nodelength(snode *head)
     return len;
 }
 
+void array_to_list1(int *a, int n, snode **head)
+{// 非空数组追加没问题
+    snode *p, *q;
+    // q = *head;
+    for (size_t i = 0; i < n; i++)
+    {
+        p = (snode *)malloc(sizeof(snode));
+        p->data = a[i];
+        p->next = NULL;
+        if (*head == NULL)
+        {
+            *head = p;
+        }
+        else
+        {
+            q->next = p;
+        }
+        q = p;
+    }
+}
 void array_to_nodelist(snode **head, int arr[], int len) {
     // Convert array to node list
+    // 与插入节点类似，从一开始就区分开头节点是否为空
 	snode * p, *q;
 	if(*head == NULL){
 		for (int i = 0; i < len; i++) {
