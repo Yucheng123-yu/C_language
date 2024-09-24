@@ -42,7 +42,7 @@ void print_list(snode *head)
     }
     printf("\n");
 }
-\
+
 snode* merge_list(snode* list1, snode* list2) {
     snode dummyHead;// 创建一个哑节点（dummyHead）作为新链表的头节点的前驱
     snode* tail = &dummyHead;
